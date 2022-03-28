@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalSource;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -24,6 +25,7 @@ public final class Constants {
     public static final int kFrontRightMotorPort = 1;
     public static final int kRearRightMotorPort = 2;
     public static final int INTAKE = 0;
+  
 
     public static final int[] kFrontLeftEncoderPorts = new int[] {0, 1};
     public static final int[] kRearLeftEncoderPorts = new int[] {2, 3};
@@ -65,10 +67,16 @@ public final class Constants {
     public static final double kPRearLeftVel = 0.5;
     public static final double kPFrontRightVel = 0.5;
     public static final double kPRearRightVel = 0.5;
+    public static DigitalSource[] kRightEncoderPorts;
+    public static DigitalSource kRightEncoderReversed;
+    public static DigitalSource kLeftEncoderReversed;
+    public static DigitalSource[] kLeftEncoderPorts;
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort0 = 0;
+    public static final int kDriverControllerPort1 = 1;
+    public static final int kDriverControllerPort2 = 2;
   }
 
   public static final class AutoConstants {
@@ -88,7 +96,16 @@ public final class Constants {
   }
 
 public static final int INTAKE = 0;
-public static final double INTAKE_SPEED = -0.8;
+public static final double INTAKE_SPEED = 1;
+public static final int SHOOTER1 = 5;
+public static final int SHOOTER2 = 6;
+public static final double SHOOTER_SPEED = 1;
+public static final int TRANSFER = 1;
+public static final double TRANSFER_SPEED = 1;
+public static final double DRIVE_FORWARD_TIME = 2.0;
+public static final String AUTONOMOUS_SPEED = null;
+public static final double AUTO_SHOOT_TIME = 4;
+public static final double AUTO_DRIVE_TIME = 1.5;
 
 
 }

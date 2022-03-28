@@ -10,7 +10,9 @@ import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import com.revrobotics.CANSparkMax;
@@ -18,13 +20,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftMotorPort,MotorType.kBrushless);
+  private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftMotorPort, MotorType.kBrushless);
   private final CANSparkMax m_rearLeft = new CANSparkMax(DriveConstants.kRearLeftMotorPort, MotorType.kBrushless);
   private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightMotorPort, MotorType.kBrushless);
   private final CANSparkMax m_rearRight = new CANSparkMax(DriveConstants.kRearRightMotorPort, MotorType.kBrushless);
 
   private final MecanumDrive m_drive =
-      new MecanumDrive(m_frontLeft, m_rearLeft, m_frontRight, m_rearRight);
+      new MecanumDrive(m_rearLeft, m_frontRight, m_rearRight, m_frontLeft);
+      
 
   // The front-left-side drive encoder
   private final Encoder m_frontLeftEncoder =
@@ -71,8 +74,10 @@ public class DriveSubsystem extends SubsystemBase {
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_frontRight.setInverted(true);
     m_frontLeft.setInverted(true);
+    m_rearLeft.setInverted(true);
+    m_frontRight.setInverted(false);
+    m_rearRight.setInverted(false);
   }
 
   @Override
@@ -86,7 +91,12 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontRightEncoder.getRate(),
             m_rearRightEncoder.getRate()));
   }
-
+  public void drivePower(double speed) {
+    m_frontLeft.set(speed);
+    m_rearLeft.set(speed);
+    m_frontRight.set(speed);
+    m_rearRight.set(speed);
+  }
   /**
    * Returns the currently-estimated pose of the robot.
    *
@@ -117,9 +127,9 @@ public class DriveSubsystem extends SubsystemBase {
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     if (fieldRelative) {
-      m_drive.driveCartesian(ySpeed, xSpeed, rot, -m_gyro.getAngle());
+      m_drive.driveCartesian(-ySpeed, xSpeed, rot, -m_gyro.getAngle());
     } else {
-      m_drive.driveCartesian(ySpeed, xSpeed, rot);
+      m_drive.driveCartesian(-ySpeed, xSpeed, rot);
     }
   }
 
@@ -219,4 +229,12 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+
+  public void driveForward(String autonomousSpeed) {
+  }
+
+  public void stop() {
+  }
+
+  
 }
